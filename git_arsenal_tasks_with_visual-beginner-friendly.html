@@ -1,0 +1,191 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Git — Command Arsenal + Practice Tasks + Visual</title>
+<style>
+  :root{
+    --bg:#0b0f14; --ink:#eaf2ff; --muted:#a8b3c7;
+    --panel:#0f1724; --panel2:#121a25; --border:#253346; --accent:#7bb0ff;
+    --good:#6de3b5; --merge:#ffd166; --main:#7bb0ff;
+  }
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+            font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif}
+  .wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:1260px;margin:0 auto;padding:18px}
+  @media(max-width:980px){ .wrap{grid-template-columns:1fr} }
+  h1{grid-column:1/-1;margin:0 0 8px;font-size:clamp(22px,3.2vw,34px)}
+  h2{margin:10px 0;color:var(--accent);font-size:clamp(18px,2.6vw,24px)}
+  .card{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .cmd{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px;margin:10px 0}
+  .cmd .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .cmd pre{margin:0;background:#0b1220;border:1px solid var(--border);border-radius:8px;padding:8px;overflow:auto}
+  .cmd code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .muted{color:var(--muted);font-size:.95rem}
+  button.copy{background:#162233;border:1px solid var(--border);color:var(--ink);border-radius:10px;padding:6px 10px;cursor:pointer}
+  button.copy:hover{background:#1a2b41}
+  ol.tasks{padding-left:20px;margin:0;display:flex;flex-direction:column;gap:14px}
+  ol.tasks li{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start}
+  ol.tasks input{margin-top:3px}
+  .verbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .verb{padding:2px 8px;border:1px solid var(--border);border-radius:999px;background:#0f1624;font-size:.85rem}
+  .svgbox{background:#0e1624;border:1px solid var(--border);border-radius:12px;padding:12px;margin-top:14px}
+  .legend{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 0}
+  .chip{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border:1px solid var(--border);border-radius:999px;background:#0f1624;font-size:.9rem;color:var(--muted)}
+  .dot{width:10px;height:10px;border-radius:50%}
+  .main{background:var(--main)}
+  .feat{background:var(--good)}
+  .merge{background:var(--merge)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Git — Command Arsenal (left) + Practice Tasks (right)</h1>
+
+    <!-- LEFT: Command Arsenal -->
+    <div class="card">
+      <h2>Command Arsenal</h2>
+
+      <div class="cmd">
+        <div class="head"><strong>Check installation</strong><button class="copy" data-copy="git --version">Copy</button></div>
+        <pre><code>git --version</code></pre>
+        <div class="muted">Verify Git is installed.</div>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Set identity & view config</strong><button class="copy" data-copy="git config --global user.name  &quot;Your Name&quot;
+git config --global user.email &quot;you@example.com&quot;
+git config --global -l">Copy</button></div>
+        <pre><code>git config --global user.name  "Your Name"
+git config --global user.email "you@example.com"
+git config --global -l</code></pre>
+        <div class="muted">Configure author name/email for commits; list global settings.</div>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Create workspace & init</strong><button class="copy" data-copy="mkdir my-git-project
+cd my-git-project
+git init
+ls -a">Copy</button></div>
+        <pre><code>mkdir my-git-project
+cd my-git-project
+git init
+ls -a</code></pre>
+        <div class="muted">Make a folder, initialize a repo, and confirm the <code>.git/</code> directory exists.</div>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Status → stage → commit</strong><button class="copy" data-copy="touch somefile.txt
+git status
+git add somefile.txt    # or: git add .
+git status -s
+git commit -m &quot;Add initial file&quot;">Copy</button></div>
+        <pre><code>touch somefile.txt
+git status
+git add somefile.txt    # or: git add .
+git status -s
+git commit -m "Add initial file"</code></pre>
+        <div class="muted">Create a file; inspect status; stage changes; commit with a clear, imperative subject.</div>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>History (basic & compact)</strong><button class="copy" data-copy="git log
+git log --oneline --graph">Copy</button></div>
+        <pre><code>git log
+git log --oneline --graph</code></pre>
+        <div class="muted">View commit history; the compact graph version is great on screen.</div>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Branches & merge</strong><button class="copy" data-copy="git branch
+git branch my-new-branch
+git switch my-new-branch
+git switch main
+git merge my-new-branch">Copy</button></div>
+        <pre><code>git branch
+git branch my-new-branch
+git switch my-new-branch
+git switch main
+git merge my-new-branch</code></pre>
+        <div class="muted">List/create/switch branches and merge back to <code>main</code>.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Tasks + Visual -->
+    <div class="card">
+      <h2>Practice Tasks</h2>
+      <ol class="tasks">
+        <li><input type="checkbox"> <div><strong>Confirm Git is installed</strong> and accessible from the terminal.</div></li>
+        <li><input type="checkbox"> <div><strong>Set your author identity</strong> (name + email) globally. Then view your global config to confirm.</div></li>
+        <li><input type="checkbox"> <div><strong>Create a workspace</strong>: make a new folder, enter it, and initialize a Git repository.</div></li>
+        <li><input type="checkbox"> <div><strong>Create your first commit</strong>: add a file, stage it, and write a clear message in the <em>imperative mood</em> (as if giving an instruction).
+          Pick one verb: 
+          <div class="verbs">
+            <span class="verb">Add</span><span class="verb">Fix</span><span class="verb">Update</span><span class="verb">Remove</span>
+            <span class="verb">Refactor</span><span class="verb">Rename</span><span class="verb">Document</span><span class="verb">Test</span>
+            <span class="verb">Revert</span><span class="verb">Bump</span><span class="verb">Configure</span><span class="verb">Build</span>
+            <span class="verb">CI</span><span class="verb">Chore</span>
+          </div>
+          <div class="muted">Example (subject only): <code>Add initial file</code> or <code>Fix remove invalid path</code>.</div>
+        </div></li>
+        <li><input type="checkbox"> <div><strong>Create a new branch</strong> and <strong>switch to it</strong>. On that branch, <strong>create a brand‑new file</strong> (e.g., <code>feature.txt</code>), stage, and commit (imperative subject).</div></li>
+        <li><input type="checkbox"> <div><strong>Return to main</strong> and inspect the history with the compact graph. Do you see two tips diverging?</div></li>
+        <li><input type="checkbox"> <div><strong>Merge your branch back to main</strong>. Verify that the new file from the branch now exists on <code>main</code> too, and the history shows the merge point.</div></li>
+      </ol>
+
+      <h2>Desired outcome (in words)</h2>
+      <p class="muted">Two branches — <code>main</code> and <code>my-new-branch</code>. The branch introduces a <em>new file</em>. After merging, that file is present on <code>main</code> as well.</p>
+
+      <div class="svgbox">
+        <svg viewBox="0 0 960 280" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" aria-label="Visual outcome">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L9,3 z" fill="#4a5b75"/>
+            </marker>
+            <style>
+              .lane{stroke:#2a3a50;stroke-width:2}
+              .edge{stroke:#4a5b75;stroke-width:3;fill:none;marker-end:url(#arrow)}
+              .node{stroke:#1b2533;stroke-width:2}
+              .lbl{fill:#eaf2ff;font:13px/1 sans-serif}
+            </style>
+          </defs>
+          <!-- lanes -->
+          <line class="lane" x1="70" y1="200" x2="900" y2="200"/>
+          <text class="lbl" x="24" y="204">main</text>
+          <line class="lane" x1="70" y1="90" x2="900" y2="90"/>
+          <text class="lbl" x="24" y="94">my-new-branch</text>
+
+          <!-- base C0 and first main commit -->
+          <circle class="node" cx="120" cy="200" r="10" fill="#9aa7bd"/>
+          <text class="lbl" x="104" y="224">C0</text>
+          <line class="edge" x1="130" y1="200" x2="300" y2="200"/>
+          <circle class="node" cx="310" cy="200" r="10" fill="#7bb0ff"/>
+          <text class="lbl" x="280" y="224">Main commit</text>
+
+          <!-- branch commit adding new file -->
+          <line class="edge" x1="310" y1="200" x2="520" y2="90"/>
+          <circle class="node" cx="530" cy="90" r="10" fill="#6de3b5"/>
+          <text class="lbl" x="500" y="70">Branch adds new file</text>
+
+          <!-- merge landing EXACTLY on main (y=200) -->
+          <line class="edge" x1="530" y1="90"  x2="760" y2="200"/>
+          <line class="edge" x1="310" y1="200" x2="760" y2="200"/>
+          <circle class="node" cx="760" cy="200" r="10" fill="#ffd166"/>
+          <text class="lbl" x="730" y="224">Merge → main</text>
+          <text class="lbl" x="620" y="248">Result: new file now on main</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+<script>
+for(const b of document.querySelectorAll("button.copy")){
+  b.addEventListener("click", ()=>{
+    navigator.clipboard.writeText(b.dataset.copy.replaceAll("\\n","\n"));
+    const t=b.textContent; b.textContent="Copied ✓"; setTimeout(()=>b.textContent=t, 1200);
+  });
+}
+</script>
+</body>
+</html>
