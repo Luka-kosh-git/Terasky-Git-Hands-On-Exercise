@@ -1,0 +1,156 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub Lab — Connect, Publish, PR Conflict (Clean Layout)</title>
+<style>
+  :root{
+    --bg:#0b0f14; --ink:#eef3ff; --muted:#a6b1c6;
+    --panel:#0f1724; --panel2:#121a25; --border:#223147; --accent:#7bb0ff; --hl:#0b1220;
+  }
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  .wrap{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:1260px;margin:0 auto;padding:22px}
+  @media(max-width:980px){ .wrap{grid-template-columns:1fr} }
+  h1{grid-column:1/-1;margin:0 0 12px;font-size:clamp(24px,3.4vw,36px)}
+  h2{margin:10px 0 8px;color:var(--accent);font-size:clamp(18px,2.4vw,22px)}
+  .card{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:16px}
+  .cmd{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px;margin:12px 0}
+  .cmd .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .cmd pre{margin:0;background:var(--hl);border:1px solid var(--border);border-radius:10px;padding:10px;overflow:auto}
+  .cmd code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.95rem}
+  .muted{color:var(--muted);font-size:.95rem}
+  button.copy{background:#162233;border:1px solid var(--border);color:var(--ink);border-radius:10px;padding:6px 10px;cursor:pointer}
+  button.copy:hover{background:#1a2b41}
+  .steps{display:flex;flex-direction:column;gap:14px}
+  .step{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .step h3{margin:0 0 8px;font-size:1.05rem}
+  .step p{margin:0 0 8px;color:var(--muted)}
+  .step pre{margin:0;background:var(--hl);border:1px solid var(--border);border-radius:10px;padding:10px;overflow:auto}
+  .note{color:var(--muted);font-size:.92rem;margin-top:8px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>GitHub Lab — Connect & Publish (Clean)</h1>
+
+    <!-- LEFT: Command Arsenal -->
+    <div class="card">
+      <h2>Command Arsenal (GitHub)</h2>
+
+      <div class="cmd">
+        <div class="head"><strong>Connect local repo to GitHub</strong><button class="copy" data-copy="git remote add origin &lt;REMOTE-URL&gt;\ngit remote -v">Copy</button></div>
+        <pre><code>git remote add origin &lt;REMOTE-URL&gt;
+git remote -v</code></pre>
+        <div class="muted">Use your repo URL (SSH or HTTPS) from GitHub.</div>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Rename master → main & first push</strong><button class="copy" data-copy="git branch -M main\ngit push -u origin main">Copy</button></div>
+        <pre><code>git branch -M main
+git push -u origin main</code></pre>
+        <div class="muted">Sets <code>main</code> as primary and establishes upstream.</div>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Create & publish branch (first time)</strong><button class="copy" data-copy="git switch -c &lt;branch&gt;\necho &quot;Changed by &lt;branch&gt;&quot; &gt;&gt; file.txt\ngit add .\ngit commit -m &quot;Add line from &lt;branch&gt;&quot;\ngit push -u origin &lt;branch&gt;">Copy</button></div>
+        <pre><code>git switch -c &lt;branch&gt;
+echo "Changed by &lt;branch&gt;" >> file.txt
+git add .
+git commit -m "Add line from &lt;branch&gt;"
+git push -u origin &lt;branch&gt;</code></pre>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Sync with main before branching</strong><button class="copy" data-copy="git switch main\ngit pull origin main">Copy</button></div>
+        <pre><code>git switch main
+git pull origin main</code></pre>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Resolve PR conflict locally (on PR branch)</strong><button class="copy" data-copy="git switch &lt;pr-branch&gt;\ngit fetch origin\ngit merge origin/main\n# edit files → resolve\ngit add &lt;files&gt;\ngit commit\ngit push">Copy</button></div>
+        <pre><code>git switch &lt;pr-branch&gt;
+git fetch origin
+git merge origin/main
+# edit files → resolve
+git add &lt;files&gt;
+git commit
+git push</code></pre>
+        <div class="muted">Push after resolving to update the PR.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Steps -->
+    <div class="card">
+      <h2>Scenario — Step by Step</h2>
+      <div class="steps">
+
+        <div class="step">
+          <h3>1) Create empty repo on GitHub</h3>
+          <p>Log in and create a new repository (leave README/License unchecked).</p>
+        </div>
+
+        <div class="step">
+          <h3>2) Connect local repo to GitHub</h3>
+          <pre><code>git remote add origin &lt;REMOTE-URL&gt;
+git remote -v</code></pre>
+        </div>
+
+        <div class="step">
+          <h3>3) Rename primary to <code>main</code> (if needed) & push</h3>
+          <pre><code>git branch -M main
+git push -u origin main</code></pre>
+          <p class="note">Open the repo page in GitHub and confirm files are visible.</p>
+        </div>
+
+        <div class="step">
+          <h3>4) Prepare two branches</h3>
+          <pre><code>git switch main
+git pull origin main
+git switch -c branch-a</code></pre>
+          <pre><code>echo "Changed by branch-a" >> file.txt
+git add .
+git commit -m "Add line from branch-a"
+git push -u origin branch-a</code></pre>
+          <pre><code>git switch main
+git pull origin main
+git switch -c branch-b</code></pre>
+          <pre><code>echo "Changed by branch-b" >> file.txt
+git add .
+git commit -m "Add line from branch-b"
+git push -u origin branch-b</code></pre>
+        </div>
+
+        <div class="step">
+          <h3>5) Open PRs in GitHub</h3>
+          <p>Create PRs: <code>branch-a → main</code> and <code>branch-b → main</code>. If both changed the same line, the second PR will show a conflict.</p>
+        </div>
+
+        <div class="step">
+          <h3>6) Resolve the conflict locally (on PR branch)</h3>
+          <pre><code>git switch branch-b
+git fetch origin
+git merge origin/main     # conflict happens here if A was merged first
+# edit files to resolve (remove &lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, &gt;&gt;&gt;&gt;&gt;&gt;&gt; markers)
+git add file.txt
+git commit
+git push</code></pre>
+          <p class="note">GitHub will update the PR and allow merging.</p>
+        </div>
+
+      </div>
+      <p class="note">Tip: if your default branch is <code>master</code>, replace <code>main</code> with <code>master</code> in all commands.</p>
+    </div>
+  </div>
+
+<script>
+for(const b of document.querySelectorAll("button.copy")){
+  b.addEventListener("click", ()=>{
+    navigator.clipboard.writeText(b.dataset.copy.replaceAll("\\n","\n"));
+    const old=b.textContent; b.textContent="Copied ✓"; setTimeout(()=>b.textContent=old, 1200);
+  });
+}
+</script>
+</body>
+</html>
