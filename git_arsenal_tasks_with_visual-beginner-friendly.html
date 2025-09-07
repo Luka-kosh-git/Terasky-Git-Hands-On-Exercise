@@ -1,10 +1,9 @@
-
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Git — Command Arsenal + Practice Tasks + Visual</title>
+<title>Git + GitHub — Command Arsenal + Two-Branches Lab</title>
 <style>
   :root{
     --bg:#0b0f14; --ink:#eaf2ff; --muted:#a8b3c7;
@@ -41,101 +40,94 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Git — Command Arsenal (left) + Practice Tasks (right)</h1>
+    <h1>Git + GitHub — Command Arsenal (left) + Two-Branches Lab (right)</h1>
 
     <!-- LEFT: Command Arsenal -->
     <div class="card">
-      <h2>Command Arsenal</h2>
+      <h2>Command Arsenal (GitHub-centric)</h2>
 
       <div class="cmd">
-        <div class="head"><strong>Check installation</strong><button class="copy" data-copy="git --version">Copy</button></div>
-        <pre><code>git --version</code></pre>
-        <div class="muted">Verify Git is installed.</div>
+        <div class="head"><strong>Connect local repo to GitHub</strong><button class="copy" data-copy="git remote add origin &lt;REMOTE-URL&gt;\ngit remote -v">Copy</button></div>
+        <pre><code>git remote add origin &lt;REMOTE-URL&gt;
+git remote -v</code></pre>
+        <div class="muted">Use the SSH/HTTPS URL of your GitHub repository.</div>
       </div>
 
       <div class="cmd">
-        <div class="head"><strong>Set identity & view config</strong><button class="copy" data-copy="git config --global user.name  &quot;Your Name&quot;
-git config --global user.email &quot;you@example.com&quot;
-git config --global -l">Copy</button></div>
-        <pre><code>git config --global user.name  "Your Name"
-git config --global user.email "you@example.com"
-git config --global -l</code></pre>
-        <div class="muted">Configure author name/email for commits; list global settings.</div>
+        <div class="head"><strong>Rename master → main & first push</strong><button class="copy" data-copy="git branch -M main\ngit push -u origin main">Copy</button></div>
+        <pre><code>git branch -M main
+git push -u origin main</code></pre>
+        <div class="muted">Sets <code>main</code> as the primary branch and establishes upstream.</div>
       </div>
 
       <div class="cmd">
-        <div class="head"><strong>Create workspace & init</strong><button class="copy" data-copy="mkdir my-git-project
-cd my-git-project
-git init
-ls -a">Copy</button></div>
-        <pre><code>mkdir my-git-project
-cd my-git-project
-git init
-ls -a</code></pre>
-        <div class="muted">Make a folder, initialize a repo, and confirm the <code>.git/</code> directory exists.</div>
+        <div class="head"><strong>Sync before branching</strong><button class="copy" data-copy="git switch main\ngit pull origin main">Copy</button></div>
+        <pre><code>git switch main
+git pull origin main</code></pre>
       </div>
 
       <div class="cmd">
-        <div class="head"><strong>Status → stage → commit</strong><button class="copy" data-copy="touch somefile.txt
-git status
-git add somefile.txt    # or: git add .
-git status -s
-git commit -m &quot;Add initial file&quot;">Copy</button></div>
-        <pre><code>touch somefile.txt
-git status
-git add somefile.txt    # or: git add .
-git status -s
-git commit -m "Add initial file"</code></pre>
-        <div class="muted">Create a file; inspect status; stage changes; commit with a clear, imperative subject.</div>
+        <div class="head"><strong>Create & publish a branch (first time)</strong><button class="copy" data-copy="git switch -c &lt;branch&gt;\necho &quot;Changed by &lt;branch&gt;&quot; &gt;&gt; file.txt\ngit add .\ngit commit -m &quot;Add line from &lt;branch&gt;&quot;\ngit push -u origin &lt;branch&gt;">Copy</button></div>
+        <pre><code>git switch -c &lt;branch&gt;
+echo "Changed by &lt;branch&gt;" >> file.txt
+git add .
+git commit -m "Add line from &lt;branch&gt;"
+git push -u origin &lt;branch&gt;</code></pre>
+        <div class="muted"><code>-u</code> sets tracking so next time a simple <code>git push</code>/<code>git pull</code> works.</div>
       </div>
 
       <div class="cmd">
-        <div class="head"><strong>History (basic & compact)</strong><button class="copy" data-copy="git log
-git log --oneline --graph">Copy</button></div>
-        <pre><code>git log
-git log --oneline --graph</code></pre>
-        <div class="muted">View commit history; the compact graph version is great on screen.</div>
-      </div>
-
-      <div class="cmd">
-        <div class="head"><strong>Branches & merge</strong><button class="copy" data-copy="git branch
-git branch my-new-branch
-git switch my-new-branch
-git switch main
-git merge my-new-branch">Copy</button></div>
-        <pre><code>git branch
-git branch my-new-branch
-git switch my-new-branch
-git switch main
-git merge my-new-branch</code></pre>
-        <div class="muted">List/create/switch branches and merge back to <code>main</code>.</div>
+        <div class="head"><strong>Open & fix PR conflict locally (on PR branch)</strong><button class="copy" data-copy="git switch &lt;pr-branch&gt;\ngit fetch origin\ngit merge origin/main\n# edit files → resolve\ngit add &lt;files&gt;\ngit commit\ngit push">Copy</button></div>
+        <pre><code>git switch &lt;pr-branch&gt;
+git fetch origin
+git merge origin/main
+# edit files → resolve
+git add &lt;files&gt;
+git commit
+git push</code></pre>
+        <div class="muted">Push after resolving to update the PR on GitHub.</div>
       </div>
     </div>
 
-    <!-- RIGHT: Tasks + Visual -->
+    <!-- RIGHT: Practice Tasks -->
     <div class="card">
-      <h2>Practice Tasks</h2>
+      <h2>Two-Branches Lab (GitHub)</h2>
       <ol class="tasks">
-        <li><input type="checkbox"> <div><strong>Confirm Git is installed</strong> and accessible from the terminal.</div></li>
-        <li><input type="checkbox"> <div><strong>Set your author identity</strong> (name + email) globally. Then view your global config to confirm.</div></li>
-        <li><input type="checkbox"> <div><strong>Create a workspace</strong>: make a new folder, enter it, and initialize a Git repository.</div></li>
-        <li><input type="checkbox"> <div><strong>Create your first commit</strong>: add a file, stage it, and write a clear message in the <em>imperative mood</em> (as if giving an instruction).
-          Pick one verb: 
-          <div class="verbs">
-            <span class="verb">Add</span><span class="verb">Fix</span><span class="verb">Update</span><span class="verb">Remove</span>
-            <span class="verb">Refactor</span><span class="verb">Rename</span><span class="verb">Document</span><span class="verb">Test</span>
-            <span class="verb">Revert</span><span class="verb">Bump</span><span class="verb">Configure</span><span class="verb">Build</span>
-            <span class="verb">CI</span><span class="verb">Chore</span>
-          </div>
-          <div class="muted">Example (subject only): <code>Add initial file</code> or <code>Fix remove invalid path</code>.</div>
+        <li><input type="checkbox"> <div><strong>Create an empty repo on GitHub</strong> (no README/License).</div></li>
+        <li><input type="checkbox"> <div><strong>Connect local to GitHub</strong> with <code>git remote add origin &lt;REMOTE-URL&gt;</code> and verify with <code>git remote -v</code>.</div></li>
+        <li><input type="checkbox"> <div><strong>Rename to <code>main</code> and push</strong>: <code>git branch -M main</code> → <code>git push -u origin main</code>. Confirm files appear in the portal.</div></li>
+        <li><input type="checkbox"> <div><strong>Create branch-a</strong>: sync main, then create the branch, append a line, stage and commit (imperative), and publish with tracking:
+<pre><code>git switch main
+git pull origin main
+git switch -c branch-a
+echo "Changed by branch-a" >> file.txt
+git add .
+git commit -m "Add line from branch-a"
+git push -u origin branch-a</code></pre>
         </div></li>
-        <li><input type="checkbox"> <div><strong>Create a new branch</strong> and <strong>switch to it</strong>. On that branch, <strong>create a brand‑new file</strong> (e.g., <code>feature.txt</code>), stage, and commit (imperative subject).</div></li>
-        <li><input type="checkbox"> <div><strong>Return to main</strong> and inspect the history with the compact graph. Do you see two tips diverging?</div></li>
-        <li><input type="checkbox"> <div><strong>Merge your branch back to main</strong>. Verify that the new file from the branch now exists on <code>main</code> too, and the history shows the merge point.</div></li>
+        <li><input type="checkbox"> <div><strong>Create branch-b</strong>: sync main again, create branch, change, commit, and publish with tracking:
+<pre><code>git switch main
+git pull origin main
+git switch -c branch-b
+echo "Changed by branch-b" >> file.txt
+git add .
+git commit -m "Add line from branch-b"
+git push -u origin branch-b</code></pre>
+        </div></li>
+        <li><input type="checkbox"> <div><strong>Open PRs</strong> in GitHub: <code>branch-a → main</code> and <code>branch-b → main</code>. If both touched the same line, the second PR will show a conflict.</div></li>
+        <li><input type="checkbox"> <div><strong>Resolve conflict locally on the PR branch</strong> (recommended): 
+<pre><code>git switch branch-b
+git fetch origin
+git merge origin/main     # conflict appears if A already merged
+# edit file(s), remove markers, keep/merge content
+git add file.txt
+git commit
+git push</code></pre>
+        GitHub will update the PR and allow merging.</div></li>
       </ol>
 
       <h2>Desired outcome (in words)</h2>
-      <p class="muted">Two branches — <code>main</code> and <code>my-new-branch</code>. The branch introduces a <em>new file</em>. After merging, that file is present on <code>main</code> as well.</p>
+      <p class="muted">Two branches — <code>branch-a</code> and <code>branch-b</code> — both published to GitHub. Each has its own change; after resolving any conflict, both changes merge into <code>main</code>.</p>
 
       <div class="svgbox">
         <svg viewBox="0 0 960 280" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" aria-label="Visual outcome">
@@ -154,7 +146,7 @@ git merge my-new-branch</code></pre>
           <line class="lane" x1="70" y1="200" x2="900" y2="200"/>
           <text class="lbl" x="24" y="204">main</text>
           <line class="lane" x1="70" y1="90" x2="900" y2="90"/>
-          <text class="lbl" x="24" y="94">my-new-branch</text>
+          <text class="lbl" x="24" y="94">feature branches</text>
 
           <!-- base C0 and first main commit -->
           <circle class="node" cx="120" cy="200" r="10" fill="#9aa7bd"/>
@@ -163,17 +155,21 @@ git merge my-new-branch</code></pre>
           <circle class="node" cx="310" cy="200" r="10" fill="#7bb0ff"/>
           <text class="lbl" x="280" y="224">Main commit</text>
 
-          <!-- branch commit adding new file -->
-          <line class="edge" x1="310" y1="200" x2="520" y2="90"/>
-          <circle class="node" cx="530" cy="90" r="10" fill="#6de3b5"/>
-          <text class="lbl" x="500" y="70">Branch adds new file</text>
+          <!-- branch-a -->
+          <line class="edge" x1="310" y1="200" x2="470" y2="90"/>
+          <circle class="node" cx="480" cy="90" r="10" fill="#6de3b5"/>
+          <text class="lbl" x="452" y="70">branch-a change</text>
 
-          <!-- merge landing EXACTLY on main (y=200) -->
-          <line class="edge" x1="530" y1="90"  x2="760" y2="200"/>
-          <line class="edge" x1="310" y1="200" x2="760" y2="200"/>
+          <!-- branch-b -->
+          <line class="edge" x1="310" y1="200" x2="610" y2="90"/>
+          <circle class="node" cx="620" cy="90" r="10" fill="#6de3b5"/>
+          <text class="lbl" x="592" y="70">branch-b change</text>
+
+          <!-- merge to main -->
+          <line class="edge" x1="480" y1="90"  x2="760" y2="200"/>
+          <line class="edge" x1="620" y1="90"  x2="760" y2="200"/>
           <circle class="node" cx="760" cy="200" r="10" fill="#ffd166"/>
-          <text class="lbl" x="730" y="224">Merge → main</text>
-          <text class="lbl" x="620" y="248">Result: new file now on main</text>
+          <text class="lbl" x="732" y="224">Merge → main</text>
         </svg>
       </div>
     </div>
