@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GitHub Actions Lab — Lessons 1–3 (Complete)</title>
+<style>
+  :root{
+    --bg:#0b0f14; --ink:#eef3ff; --muted:#a6b1c6;
+    --panel:#0f1724; --panel2:#121a25; --border:#223147; --accent:#7bb0ff; --hl:#0b1220; --good:#7effc5; --warn:#ffd27b; --danger:#ff8a8a;
+    --greenlink:#7effc5; --red:#ff5f5f;
+  }
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  .wrap{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:1260px;margin:0 auto;padding:22px}
+  @media(max-width:1100px){ .wrap{grid-template-columns:1fr} }
+  h1{grid-column:1/-1;margin:0 0 12px;font-size:clamp(24px,3.4vw,36px)}
+  h2{margin:10px 0 8px;color:var(--accent);font-size:clamp(18px,2.4vw,22px)}
+  h3{margin:12px 0 6px}
+  .card{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:16px}
+  .callout{grid-column:1/-1;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px}
+  .callout h2{margin-top:0}
+  .danger{color:var(--red);font-weight:700}
+  .muted{color:var(--muted)}
+  .cmd{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px;margin:12px 0}
+  .cmd .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:10px}
+  .cmd pre{margin:0;background:var(--hl);border:1px solid var(--border);border-radius:10px;padding:10px;overflow:auto}
+  .cmd code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.95rem}
+  button.copy{background:#162233;border:1px solid var(--border);color:var(--ink);border-radius:10px;padding:6px 10px;cursor:pointer}
+  button.copy:hover{background:#1a2b41}
+  .greenlink{color:var(--greenlink)!important;font-weight:600;text-decoration:none;border-bottom:1px dashed var(--greenlink)}
+  .greenlink:hover{text-decoration:underline}
+  table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  th,td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{background:#0e1626;text-align:left;color:#b7c7e6}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;background:#0e1a2e;color:#cbd7f1;font-size:.8rem}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>GitHub Actions Lab — Lessons 1–3 (Complete)</h1>
+
+    <!-- HOW TO ACCESS THE LAB REPO (two options) -->
+    <div class="callout">
+      <h2>Start Here — Two ways to get the repo</h2>
+      <ol>
+        <li><strong>Clone my lab repo</strong> → <a class="greenlink" href="https://github.com/Luka-kosh-git/Terasky-Github-Workflows-labs" target="_blank" rel="noopener">Luka-kosh-git/Terasky-Github-Workflows-labs</a></li>
+        <li><strong>Create your own repo</strong> → then push your local code.</li>
+      </ol>
+      <div class="muted">After either option, continue with the lessons below.</div>
+    </div>
+
+    <!-- OPTIONAL SELF-HOSTED RUNNER -->
+    <div class="callout">
+      <h2 class="danger">Optional — Use a Self-Hosted Runner</h2>
+      <p>First, log in to your GitHub account, choose (or create) your repository, then:</p>
+      <pre><code>Repo → Settings → Actions → Runners → New self-hosted runner</code></pre>
+      <ol>
+        <li>Pick OS: Linux / Windows / macOS</li>
+        <li>Pick Arch: x64 or ARM64 (match your machine)</li>
+        <li>Follow the on-screen steps:
+          <ul>
+            <li>Download runner package</li>
+            <li>Configure (paste registration token)</li>
+            <li>Choose defaults when prompted (press Enter)</li>
+            <li>Start the runner</li>
+          </ul>
+        </li>
+        <li>Verify it shows as <code>Online</code> under Runners.</li>
+      </ol>
+      <div class="muted">
+        Tips: keep the terminal open so the runner stays online (or install as a service). Labels are auto-added (e.g., <code>self-hosted</code>, <code>macOS</code>, <code>ARM64</code>); target them in YAML if needed.
+      </div>
+    </div>
+
+    <!-- LEFT: ARSENAL -->
+    <div class="card">
+      <h2>Command Arsenal</h2>
+      <div class="cmd">
+        <div class="head"><strong>Create Actions folders</strong><button class="copy" data-copy-id="copy-folders">Copy</button></div>
+        <pre id="copy-folders"><code>mkdir -p .github/workflows
+ls -la .github .github/workflows</code></pre>
+        <div class="muted">Required path for workflow files.</div>
+      </div>
+      <div class="cmd">
+        <div class="head"><strong>Commit & push workflows</strong><button class="copy" data-copy-id="copy-commit">Copy</button></div>
+        <pre id="copy-commit"><code>git add .github/workflows
+git commit -m "Add workflows for lessons 1–3"
+git push</code></pre>
+      </div>
+      <div class="cmd">
+        <div class="head"><strong>Target a self-hosted runner (labels)</strong><button class="copy" data-copy-id="copy-runner">Copy</button></div>
+        <pre id="copy-runner"><code>jobs:
+  build:
+    runs-on: [self-hosted]            # or: [self-hosted, macOS, ARM64]</code></pre>
+        <div class="muted">Use only <code>[self-hosted]</code> to match any self-hosted runner, or add OS/arch labels.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: GLOSSARY -->
+    <div class="card">
+      <h2>Glossary — What does each thing mean?</h2>
+      <table>
+        <tr><th>Term</th><th>What it is</th></tr>
+        <tr><td><code>workflow_dispatch</code></td><td>Manual trigger to run a workflow from the GitHub UI.</td></tr>
+        <tr><td><code>on</code> / <code>push</code></td><td>Events that trigger the workflow; <code>push</code> runs on commits to branches.</td></tr>
+        <tr><td><code>jobs</code></td><td>Top-level sections that run on runners; can run in parallel unless linked with <code>needs</code>.</td></tr>
+        <tr><td><code>steps</code></td><td>Commands/actions inside a job; executed sequentially on the same runner.</td></tr>
+        <tr><td><code>needs</code></td><td>Declares job dependencies and ordering; allows accessing <code>needs.&lt;job&gt;.outputs/result</code>.</td></tr>
+        <tr><td><code>if</code> / <code>always()</code></td><td>Conditional execution; <code>always()</code> makes a step/job run regardless of previous outcomes.</td></tr>
+        <tr><td><code>env</code></td><td>Environment variables defined at workflow/job/step levels (lower scopes override higher ones).</td></tr>
+        <tr><td><code>inputs</code></td><td>User-provided parameters for <code>workflow_dispatch</code> (string/choice/boolean).</td></tr>
+        <tr><td><code>${{ toJSON(github) }}</code></td><td>Renders the GitHub context object as JSON (useful for debugging).</td></tr>
+        <tr><td><code>GITHUB_CONTEXT</code></td><td>A variable name we set to hold <code>toJSON(github)</code> so we can echo it.</td></tr>
+        <tr><td><code>github.event.inputs</code></td><td>Accesses manual inputs supplied to <code>workflow_dispatch</code>.</td></tr>
+        <tr><td><code>runs-on</code></td><td>Specifies which runner executes the job (e.g., <span class="pill">ubuntu-latest</span>, <span class="pill">self-hosted</span>).</td></tr>
+      </table>
+    </div>
+
+    <!-- LESSON 1 -->
+    <div class="card">
+      <h2>Lesson 1 — Basic Workflow (manual)</h2>
+
+      <p class="muted">Pick <em>one</em> of the two variants: GitHub-hosted Ubuntu, or your self-hosted runner.</p>
+
+      <div class="cmd">
+        <div class="head"><strong>Variant A — Ubuntu runner</strong><button class="copy" data-copy-id="copy-l1-ubuntu">Copy</button></div>
+        <pre id="copy-l1-ubuntu"><code># This is a basic workflow that is manually triggered
+
+# Display name of workflow
+name: Basic Workflow (Ubuntu)
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI or API.
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Person to greet"
+        default: "World"
+        required: true
+        type: string
+      city:
+        description: "City"
+        required: true
+        type: choice
+        options: ["Tel Aviv","Haifa","Jerusalem"]
+
+jobs:
+  greet:
+    name: "Greetings, Program!"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send greeting
+        run: |
+          echo "Hi ${{ github.event.inputs.name }}"
+          echo "Selected city: ${{ github.event.inputs.city }}"</code></pre>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Variant B — Self-hosted runner</strong><button class="copy" data-copy-id="copy-l1-self">Copy</button></div>
+        <pre id="copy-l1-self"><code># This is a basic workflow that is manually triggered
+
+# Display name of workflow
+name: Basic Workflow (Self-hosted)
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Person to greet"
+        default: "World"
+        required: true
+        type: string
+      city:
+        description: "City"
+        required: true
+        type: choice
+        options:
+          - Tel Aviv
+          - Haifa
+          - Jerusalem
+
+jobs:
+  greet:
+    name: "Greetings, Program!"
+    runs-on: [self-hosted]   # Or: [self-hosted, macOS, ARM64]
+    steps:
+      - name: Send greeting
+        run: |
+          echo "Hi ${{ github.event.inputs.name }}"
+          echo "Selected city: ${{ github.event.inputs.city }}"</code></pre>
+      </div>
+
+      <div class="cmd">
+        <div class="head"><strong>Lesson 1.1 — Push trigger</strong><button class="copy" data-copy-id="copy-l1-push">Copy</button></div>
+        <pre id="copy-l1-push"><code># A simple push-triggered workflow
+name: Basic Workflow (Push)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show commit info
+        run: |
+          echo "Actor: ${{ github.actor }}"
+          echo "Branch/Ref: ${{ github.ref }}"
+          echo "Commit: ${{ github.sha }}"</code></pre>
+      </div>
+    </div>
+
+    <!-- LESSON 2 -->
+    <div class="card">
+      <h2>Lesson 2 — Chaining Jobs</h2>
+      <div class="cmd">
+        <div class="head"><strong>02-chaining.yml</strong><button class="copy" data-copy-id="copy-l2">Copy</button></div>
+        <pre id="copy-l2"><code># Display name of the workflow
+name: Chaining Jobs
+
+# Trigger: this workflow can be started manually from GitHub UI
+on:
+  workflow_dispatch:
+    inputs:                      # User inputs when running manually
+      run-job-3:                 # Boolean input to decide if Job 3 should run
+        description: "Run job 3"
+        required: true
+        type: boolean
+
+jobs:
+  job-1:                         # First job in the workflow
+    name: Job 1
+    runs-on: ubuntu-latest       # Uses a GitHub-hosted Ubuntu runner
+    steps:
+      - name: Output for Job 1
+        run: echo "Hello from Job 1. Run Job 3 equals ${{ github.event.inputs.run-job-3 }}"
+        # Here we access the input value and print it (true/false)
+
+  job-2:                         # Second job
+    name: Job 2
+    runs-on: ubuntu-latest
+    needs:                       # Job 2 will only run after Job 1 completes successfully
+      - job-1
+    steps:
+      - name: Output for Job 2
+        run: echo "Hello from Job 2"
+
+  job-3:                         # Third job
+    name: Job 3
+    if: github.event.inputs.run-job-3 == 'true'   # This job runs only if the input checkbox was true
+    runs-on: ubuntu-latest
+    needs:
+      - job-1                    # Job 3 also depends on Job 1
+    steps:
+      - name: Output for Job 3
+        run: echo "Hello from Job 3"
+
+  job-4:                         # Fourth job
+    name: Job 4
+    runs-on: ubuntu-latest
+    if: always()                 # Ensures Job 4 will always run, even if previous jobs failed or were skipped
+    needs:                       # Still requires both Job 2 and Job 3 to finish first
+      - job-2
+      - job-3
+    steps:
+      - name: Output for Job 4
+        run: echo "Hello from Job 4"</code></pre>
+      </div>
+    </div>
+
+    <!-- LESSON 3 -->
+    <div class="card">
+      <h2>Lesson 3 — Variables & Context</h2>
+      <div class="cmd">
+        <div class="head"><strong>03-variables.yml</strong><button class="copy" data-copy-id="copy-l3">Copy</button></div>
+        <pre id="copy-l3"><code># A workflow that demonstrates GitHub context, outputs, and environment variables
+name: Variables and Context
+
+# Trigger: run manually from GitHub UI
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Person to greet'
+        default: 'World'
+        required: true
+
+# Workflow-level environment variables (available to all jobs)
+env:
+  VAR1: myworkflowvar1
+  VAR2: myworkflowvar2
+  VAR3: myworkflowvar3
+
+jobs:
+
+  job1:                       # Job 1 - show GitHub context
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}   # Convert context object to JSON
+        run: echo "$GITHUB_CONTEXT"              # Print it to logs
+
+  job2:                       # Job 2 - demonstrate step and job outputs
+    runs-on: ubuntu-latest
+    outputs:                  # Job-level outputs (exposed to other jobs)
+      output1: ${{ steps.step1.outputs.step1value }}
+      output2: ${{ steps.step2.outputs.step
